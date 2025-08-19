@@ -8,7 +8,7 @@ Mapa de serviços sociais gratuitos, facilitando o acesso a direitos básicos po
 - [Sobre](#-sobre)
 - [Tecnologias](#-tecnologias)
 - [Instalação](#-instalação)
-- [Autor](#-autor)
+- [Autor](#-autores)
 
 ---
 
@@ -62,5 +62,5 @@ Raissa Santos Feitosa
 
 Vitor de Oliveira Faria
 - [LinkedIn](https://www.linkedin.com/in/vitor-oliveira-526a28209)
-- [GitHub](preencher)
+- [GitHub](https://github.com/Vi1tor)
 
