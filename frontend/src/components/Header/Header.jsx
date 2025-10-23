@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
 
-export function Header() {
+export function Header({ isLoggedIn = false, onLogout, userName }) {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user, logout, isAuthenticated } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
@@ -17,12 +14,6 @@ export function Header() {
 
   const closeMenu = () => {
     setMenuOpen(false);
-  };
-
-  const handleLogout = () => {
-    logout();
-    closeMenu();
-    navigate("/");
   };
 
   return (
@@ -37,6 +28,7 @@ export function Header() {
           <h1 className="header-title">Mapa Social</h1>
         </Link>
 
+        {/* Botão hamburguer (visível no mobile) */}
         <button
           className={`hamburger ${menuOpen ? "active" : ""}`}
           onClick={toggleMenu}
@@ -47,8 +39,9 @@ export function Header() {
           <span className="bar"></span>
         </button>
 
+        {/* Navegação */}
         <nav className={`header-nav ${menuOpen ? "open" : ""}`}>
-          {!isAuthenticated ? (
+          {!isLoggedIn ? (
             <>
               <Link
                 to="/"
@@ -77,29 +70,14 @@ export function Header() {
             </>
           ) : (
             <>
-              <Link
-                to="/"
-                className={`nav-link ${isActive("/") ? "nav-active" : ""}`}
-                onClick={closeMenu}
-              >
-                Home
-              </Link>
-              <Link
-                to="/sugestao"
-                className={`nav-link ${isActive("/sugestao") ? "nav-active" : ""}`}
-                onClick={closeMenu}
-              >
-                Sugerir Serviço
-              </Link>
-              {user && (
-                <div className="user-info">
+              {userName && (
+                <div className="user-info" onClick={closeMenu}>
                   <div className="user-avatar">
-                    <span className="user-initial">{user.nome[0]}</span>
+                    <span className="user-initial">{userName[0]}</span>
                   </div>
-                  <span className="user-name">{user.nome}</span>
                 </div>
               )}
-              <button onClick={handleLogout} className="button-access">
+              <button onClick={() => { onLogout(); closeMenu(); }} className="button-access">
                 SAIR
               </button>
             </>
