@@ -62,7 +62,6 @@ Relacionamentos entre usuários e sugestões, favoritos e serviços sociais.
 
 ## Fluxo Simplificado de Operação
 
-```mermaid
 sequenceDiagram
     participant U as Usuário
     participant F as Frontend (React)
