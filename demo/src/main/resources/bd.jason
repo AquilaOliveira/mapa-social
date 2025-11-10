@@ -1,0 +1,17 @@
+{
+    "nome": "Abrigo Bom Pastor",
+    "tipo": "ONG",
+    "telefone": "31999998888",
+    "endereco": {
+        "rua": "Rua das Flores",
+        "numero": 123,
+        "bairro": "Centro",
+        "cidade": "Belo Horizonte",
+        "uf": "MG",
+        "cep": "30123-456",
+        "complemento": "Próximo à praça"
+    },
+    "categoria": {
+        "id": 1 // Importante: Este ID deve ser de uma Categoria que JÁ existe no BD!
+    }
+}
