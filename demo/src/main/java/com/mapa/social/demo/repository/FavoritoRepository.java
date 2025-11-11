@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface FavoritoRepository extends JpaRepository<Favorito, Integer> {
 
     // 1. Buscar todos os favoritos de um usuário específico
-    // List<Favorito> findByUsuarioId(Integer usuarioId);
+    List<Favorito> findByUsuarioId(Integer usuarioId);
     
     // 2. Verificar se um serviço já é favorito de um usuário
     Optional<Favorito> findByUsuarioIdAndServicoSocialId(Integer usuarioId, Integer servicoSocialId);

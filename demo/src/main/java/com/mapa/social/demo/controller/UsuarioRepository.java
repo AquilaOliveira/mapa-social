@@ -1,7 +1,7 @@
 
 
 
-package com.mapa.social.demo.repository; 
+package com.mapa.social.demo.controller; 
 
 import com.mapa.social.demo.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -20,7 +20,6 @@ public class HistoricoService {
     // private final UsuarioService usuarioService;
     // private final ServicoSocialService servicoSocialService;
 
-    @Autowired
     public HistoricoService(HistoricoRepository historicoRepository /*, UsuarioService usuarioService, ServicoSocialService servicoSocialService */) {
         this.historicoRepository = historicoRepository;
         // this.usuarioService = usuarioService;
@@ -54,19 +53,26 @@ public class HistoricoService {
     }
 
     /**
+    /**
      * Busca o histórico de acessos de um usuário específico pelo ID do usuário.
      * @param usuarioId ID do usuário.
      * @return Lista de registros de Histórico.
      */
-    public List<Historico> buscarPorUsuarioId(Integer usuarioId) {
-        return historicoRepository.findByUsuarioId(usuarioId);
-    }
 
     /**
      * Busca um registro específico de histórico pelo ID.
      */
     public Optional<Historico> buscarPorId(Integer id) {
         return historicoRepository.findById(id);
+    }
+
+    /**
+     * Busca o histórico de acessos de um usuário específico pelo ID do usuário.
+     * @param usuarioId ID do usuário.
+     * @return Lista de registros de Histórico.
+     */
+    public List<Historico> buscarPorUsuarioId(Integer usuarioId) {
+        return historicoRepository.findByUsuarioId(usuarioId);
     }
 
     /**

@@ -1,10 +1,7 @@
 package com.mapa.social.demo.service;
 
 import com.mapa.social.demo.model.Favorito;
-import com.mapa.social.demo.model.Usuario;
-import com.mapa.social.demo.model.ServicoSocial;
 import com.mapa.social.demo.repository.FavoritoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +15,6 @@ public class FavoritoService {
     // Injetar outros services (UsuarioService, ServicoSocialService) é comum aqui
     // para garantir que os IDs fornecidos existam no BD antes de criar o Favorito.
 
-    @Autowired
     public FavoritoService(FavoritoRepository favoritoRepository) {
         this.favoritoRepository = favoritoRepository;
     }
@@ -64,15 +60,21 @@ public class FavoritoService {
      * @param usuarioId ID do usuário.
      * @return Lista de registros de Favorito.
      */
-    public List<Favorito> listarFavoritosPorUsuario(Integer usuarioId) {
-        return favoritoRepository.findByUsuarioId(usuarioId);
-    }
-
+   
     /**
      * Busca todos os registros de favorito. (Geralmente restrito a ADMIN)
      */
     public List<Favorito> buscarTodos() {
         return favoritoRepository.findAll();
+    }
+
+    /**
+     * Lista todos os favoritos de um usuário.
+     * @param usuarioId ID do usuário.
+     * @return Lista de registros de Favorito.
+     */
+    public List<Favorito> listarFavoritosPorUsuario(Integer usuarioId) {
+        return favoritoRepository.findByUsuarioId(usuarioId);
     }
     
     // ... (Outros métodos como buscarPorId, deletar, etc., podem ser adicionados)
