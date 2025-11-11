@@ -18,6 +18,9 @@ public class ServicoSocial {
     @Column(length = 20)
     private String telefone;
 
+    @Column(length = 500)
+    private String descricao; // Descrição do serviço social
+
     // Relacionamento OneToOne com Endereco
     // Um ServicoSocial tem um Endereco, e um Endereco pertence a um ServicoSocial.
     // Usamos @JoinColumn para criar a chave estrangeira 'endereco_id' nesta tabela.
@@ -67,6 +70,14 @@ public class ServicoSocial {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Endereco getEndereco() {

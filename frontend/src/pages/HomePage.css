@@ -2,7 +2,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #97b7d9f2;
+  background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
 }
 
 .home-main {
@@ -25,6 +25,7 @@
 .hero-title {
   font-size: 2rem;
   font-weight: bold;
+  color: #1e40af;
 }
 
 @media (min-width: 768px) {
@@ -40,7 +41,7 @@
 }
 
 .highlight-red {
-  color: #d43c3c;
+  color: #2563eb;
 }
 
 .hero-subtitle {
@@ -50,13 +51,13 @@
 }
 
 .hero-subtitle-main {
-  color: #47762f;
+  color: #059669;
   font-size: 1.25rem;
   font-weight: 600;
 }
 
 .hero-subtitle-secondary {
-  color: #47762f;
+  color: #6b7280;
   font-size: 1.125rem;
 }
 
@@ -211,4 +212,74 @@
 .cta-button:hover {
   color: #062f5a;
   background-color: #b87720;
+}
+
+/* Status Messages */
+.status-message {
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 16px 0;
+  font-size: 16px;
+}
+
+.status-message.loading {
+  background-color: #e8f4fd;
+  color: #0056b3;
+  border-left: 4px solid #007bff;
+}
+
+.status-message.error {
+  background-color: #fee;
+  color: #dc3545;
+  border-left: 4px solid #dc3545;
+}
+
+/* Search Results */
+.search-results {
+  text-align: center;
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  margin: 16px 0;
+  color: #2c4c6d;
+  font-weight: 600;
+}
+
+/* Category Filter Info */
+.category-filter-info {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.category-filter-info p {
+  margin: 0;
+  color: #2c4c6d;
+  font-size: 16px;
+}
+
+.category-filter-info strong {
+  color: #d48d28;
+}
+
+.clear-category-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.clear-category-btn:hover {
+  background-color: #c82333;
 }

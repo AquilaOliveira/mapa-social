@@ -19,8 +19,14 @@ public class Usuario {
     @Column(name = "senha_hash", nullable = false, length = 255) // Armazenará a senha criptografada (hash)
     private String senhaHash;
 
+    @Column(length = 14) // CPF com formatação: 000.000.000-00
+    private String cpf;
+
+    @Column(length = 20) // Telefone com formatação: (00) 00000-0000
+    private String telefone;
+
     @Column(nullable = false, length = 50)
-    private String tipo; // Ex: "ADMIN", "COMUM", "PARCEIRO"
+    private String tipo = "COMUM"; // Ex: "ADMIN", "COMUM", "PARCEIRO" - Padrão: COMUM
 
     @Column(name = "data_cadastro", nullable = false)
     private LocalDateTime dataCadastro = LocalDateTime.now(); // datatime data_cadastro
@@ -79,5 +85,21 @@ public class Usuario {
 
     public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 }

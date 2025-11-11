@@ -36,6 +36,12 @@ public class Endereco {
     @Column(length = 255) // Complemento pode ser nulo, até 255 caracteres
     private String complemento;
 
+    @Column // Latitude para geolocalização no mapa
+    private Double latitude;
+
+    @Column // Longitude para geolocalização no mapa
+    private Double longitude;
+
     // --- Construtor Padrão (necessário para JPA) ---
     public Endereco() {
     }
@@ -49,6 +55,19 @@ public class Endereco {
         this.uf = uf;
         this.cep = cep;
         this.complemento = complemento;
+    }
+
+    // Construtor com latitude e longitude
+    public Endereco(String rua, Integer numero, String bairro, String cidade, String uf, String cep, String complemento, Double latitude, Double longitude) {
+        this.rua = rua;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.uf = uf;
+        this.cep = cep;
+        this.complemento = complemento;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     // --- Getters e Setters para todos os atributos ---
@@ -117,6 +136,22 @@ public class Endereco {
         this.complemento = complemento;
     }
 
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
     // --- Método toString (útil para depuração) ---
     @Override
     public String toString() {
@@ -129,6 +164,8 @@ public class Endereco {
                ", uf='" + uf + '\'' +
                ", cep='" + cep + '\'' +
                ", complemento='" + complemento + '\'' +
+               ", latitude=" + latitude +
+               ", longitude=" + longitude +
                '}';
     }
 }

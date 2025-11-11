@@ -1,29 +1,103 @@
 .service-card {
-  background-color: #3d6a96;
-  border-radius: 12px;
-  padding: 32px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: 180px;
+  gap: 16px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
   cursor: pointer;
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  min-height: 100px;
 }
 
 .service-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 255, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+  border-color: var(--primary-blue, #2563eb);
 }
 
 .service-card-icon {
-  width: 48px;
-  height: 48px;
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  border-radius: 14px;
+  padding: 10px;
+  box-shadow: inset 0 0 0 1px #e2e8f0;
+}
+
+.service-card-icon img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: none;
+  transition: transform .25s ease;
+}
+
+.service-card:hover .service-card-icon img {
+  transform: scale(1.08);
+}
+
+.service-card-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .service-card-title {
-  color: #ffffff;
+  font-size: 16px;
   font-weight: 600;
-  font-size: 1.125rem;
-  text-align: center;
+  color: var(--text-primary, #1e293b);
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+.service-card-subtitle {
+  font-size: 14px;
+  color: var(--neutral-gray, #64748b);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.service-card-count {
+  flex-shrink: 0;
+}
+
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  background: linear-gradient(135deg, var(--primary-blue, #2563eb), var(--secondary-green, #10b981));
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 18px;
+}
+
+@media (max-width: 768px) {
+  .service-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .service-card-icon {
+    margin: 0 auto;
+  }
+
+  .service-card-count {
+    width: 100%;
+  }
+
+  .count-badge {
+    width: 100%;
+  }
 }

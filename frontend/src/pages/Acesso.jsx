@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Header } from "../components/Header/Header";
-import { Footer } from "../components/Footer/Footer";
-import { AcessoCard } from "../components/Cards/AcessoCard";
+import { Header } from "../components/layout/Header";
+import { Footer } from "../components/layout/Footer";
+import { AcessoCard } from "../components/cards/AcessoCard";
 import "./Acesso.css"; 
 
 export function Acesso({ onLogin, userName = "Usuário" }) {
@@ -29,10 +29,10 @@ export function Acesso({ onLogin, userName = "Usuário" }) {
             <h3 className="services-title">O que deseja fazer?</h3>
 
             <div className="acesso-grid">
-              <AcessoCard title="Acessar o Mapa Social" />
-              <AcessoCard title="Serviços Favoritos" />
-              <AcessoCard title="Acompanhar Sugestões" />
-              <AcessoCard title="Visualizar Notícias" />
+                <AcessoCard title="Acessar o Mapa Social" linkTo="/" />
+                <AcessoCard title="Serviços Favoritos" linkTo="#" />
+                <AcessoCard title="Acompanhar Sugestões" linkTo="/sugestao" />
+                <AcessoCard title="Visualizar Notícias" linkTo="#" />
             </div>
           </section>
         </div>

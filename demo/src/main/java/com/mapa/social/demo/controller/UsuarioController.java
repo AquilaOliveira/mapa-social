@@ -48,9 +48,18 @@ public class UsuarioController {
              return ResponseEntity.badRequest().body("Email e senha são obrigatórios.");
         }
 
-        if (usuarioService.verificarSenha(email, senha)) {
-            // Em um sistema real, aqui você geraria um token JWT ou iniciaria uma sessão
-            return ResponseEntity.ok(Map.of("message", "Login bem-sucedido!"));
+        Usuario usuario = usuarioService.buscarPorEmail(email);
+        if (usuario != null && usuarioService.verificarSenha(email, senha)) {
+            // Retorna dados do usuário (sem a senha)
+            return ResponseEntity.ok(Map.of(
+                "message", "Login bem-sucedido!",
+                "usuario", Map.of(
+                    "id", usuario.getId(),
+                    "nome", usuario.getNome(),
+                    "email", usuario.getEmail(),
+                    "tipo", usuario.getTipo()
+                )
+            ));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Credenciais inválidas."));
         }

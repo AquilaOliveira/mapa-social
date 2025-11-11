@@ -1,10 +1,11 @@
-import React from "react";
+import React from 'react';
+import './AcessoCard.css';
 
-export function AcessoCard({ title, subtitle }) {
+export function AcessoCard({ title, description }) {
   return (
-    <div className="service-card">
-      <h4>{title}</h4>
-      {subtitle && <p>{subtitle}</p>}
+    <div className="acesso-card">
+      <h3 className="acesso-card-title">{title}</h3>
+      <p className="acesso-card-description">{description}</p>
     </div>
   );
 }

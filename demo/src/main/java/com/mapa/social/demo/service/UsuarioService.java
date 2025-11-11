@@ -63,6 +63,13 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
     
+    /**
+     * Busca um usuário pelo email.
+     */
+    public Usuario buscarPorEmail(String email) {
+        return usuarioRepository.findByEmail(email).orElse(null);
+    }
+    
     // **Método essencial para login/autenticação (verifica a senha)**
     public boolean verificarSenha(String email, String senhaEmTextoSimples) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);

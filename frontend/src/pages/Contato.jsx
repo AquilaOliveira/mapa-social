@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Header } from "../components/Header/Header";
-import { Footer } from "../components/Footer/Footer";
+import { Header } from "../components/layout/Header";
+import { Footer } from "../components/layout/Footer";
 import "./Contato.css";
 
 export function Contato() {

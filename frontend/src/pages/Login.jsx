@@ -1,17 +1,47 @@
 import { useState } from "react";
-import { Header } from "../components/Header/Header";
-import { Footer } from "../components/Footer/Footer";
-import { Link } from "react-router-dom";
+import { Header } from "../components/layout/Header";
+import { Footer } from "../components/layout/Footer";
+import { Link, useNavigate } from "react-router-dom";
+import { usuarioAPI } from "../services/api";
 import "./Login.css";
 
 export function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email && password) {
-      onLogin(email);
+    setError("");
+    setLoading(true);
+
+    try {
+      // Chama a API do backend
+      const response = await usuarioAPI.login(email, password);
+      
+      // Se login bem-sucedido
+      if (response.message === "Login bem-sucedido!" && response.usuario) {
+        // Salva os dados do usuário no localStorage
+        localStorage.setItem("userId", response.usuario.id);
+        localStorage.setItem("userName", response.usuario.nome);
+        localStorage.setItem("userEmail", response.usuario.email);
+        localStorage.setItem("userTipo", response.usuario.tipo);
+        
+        // Chama callback do componente pai
+        if (onLogin) {
+          onLogin(response.usuario.email);
+        }
+        
+        // Redireciona para página inicial
+        navigate("/");
+      }
+    } catch (err) {
+      // Trata erros de autenticação
+      setError(err.message || "Credenciais inválidas. Tente novamente.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -25,6 +55,19 @@ export function Login({ onLogin }) {
 
           <div className="login-form-container">
             <form onSubmit={handleSubmit} className="login-form">
+              {error && (
+                <div className="error-message" style={{ 
+                  color: 'red', 
+                  padding: '10px', 
+                  marginBottom: '15px', 
+                  backgroundColor: '#ffebee',
+                  borderRadius: '4px',
+                  textAlign: 'center'
+                }}>
+                  {error}
+                </div>
+              )}
+
               <div>
                 <label>E-mail</label>
                 <input
@@ -33,6 +76,7 @@ export function Login({ onLogin }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={loading}
                 />
               </div>
 
@@ -44,6 +88,7 @@ export function Login({ onLogin }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  disabled={loading}
                 />
               </div>
 
@@ -53,8 +98,8 @@ export function Login({ onLogin }) {
                 </Link>
               </div>
 
-              <button type="submit" className="submit-button">
-                Entrar
+              <button type="submit" className="submit-button" disabled={loading}>
+                {loading ? "Entrando..." : "Entrar"}
               </button>
             </form>
 

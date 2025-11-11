@@ -1,8 +1,8 @@
-package com.mapa.social.demo.service;
+package com.mapa.social.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import com.mapa.social.demo.model.Usuario;
+ 
 
 // Tabela para armazenar sugestões de novos serviços
 @Entity
