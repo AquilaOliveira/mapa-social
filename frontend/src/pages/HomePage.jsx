@@ -67,7 +67,7 @@ export function HomePage() {
         <section className="hero-section">
           <div className="hero-content">
             <h2 className="hero-title">
-              Bem-vindo ao <span className="highlight-red">Mapa Social</span>
+              Bem-vindo ao <span className="highlight">Mapa Social</span>
             </h2>
 
             <div className="hero-subtitle">
@@ -75,7 +75,7 @@ export function HomePage() {
                 Encontre aqui os serviços sociais disponíveis para você!
               </p>
               <p className="hero-subtitle-secondary">
-                Pensado para facilitar o acesso a saúde, educação, lazer e muito mais.
+                Pensado para facilitar o acesso à saúde, educação, lazer e muito mais.
               </p>
             </div>
 
@@ -93,6 +93,7 @@ export function HomePage() {
                   src="/src/assets/icons/lupa.png"
                   alt="Buscar"
                   className="search-icon"
+                  style={{ cursor: "pointer" }}
                 />
               </div>
             </div>

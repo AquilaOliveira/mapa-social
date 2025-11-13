@@ -9,7 +9,7 @@ export function ServiceCard({ iconSrc, title, subtitle, count }) {
       </div>
       <div className="service-card-content">
         <h3 className="service-card-title">{title}</h3>
-        <p className="service-card-subtitle">{subtitle}</p>
+        {subtitle && <p className="service-card-subtitle">{subtitle}</p>}
       </div>
       {count !== undefined && (
         <div className="service-card-count">

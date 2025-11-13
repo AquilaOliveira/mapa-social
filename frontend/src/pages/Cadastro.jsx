@@ -78,7 +78,7 @@ export function Cadastro() {
       <Header />
 
       <main className="cadastro-main">
-        <div className="cadastro-wrapper">
+                <div className="cadastro-wrapper">
           <h2>Criar Conta</h2>
             <p>Preencha os campos abaixo para se cadastrar</p>
 

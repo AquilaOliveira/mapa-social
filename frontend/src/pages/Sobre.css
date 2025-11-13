@@ -2,24 +2,55 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #97b7d9f2;
+  background-color: #f6f7f8;
 }
 
+/* Mantém a largura e centralização */
 .sobre-main {
   flex: 1;
-  max-width: 1120px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
   padding: 48px 24px;
 }
 
-.intro-section {
+/* NOVO CONTAINER CENTRAL */
+.sobre-container {
+  width: 100%;
+  max-width: 1120px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 48px 40px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Sutil destaque ao passar o mouse */
+.sobre-container:hover {
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sobre-container {
+    padding: 32px 24px;
+    border-radius: 16px;
+  }
+}
+
+/* Seções internas */
+.intro-section,
+.why-section,
+.objective-section {
   margin-bottom: 64px;
 }
+
+/* ---------- Seções existentes abaixo ---------- */
 
 .intro-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #387f46;
+  color: #233e83;
   margin-bottom: 32px;
 }
 
@@ -50,7 +81,7 @@
 .intro-subtitle {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #163758;
+  color: #1f456b;
   line-height: 1.3;
 }
 
@@ -69,13 +100,13 @@
 }
 
 .intro-link .highlight-link {
-  color: #568f3a;
+  color: #262ca5;
   text-decoration: underline;
   transition: color 0.3s ease;
 }
 
 .intro-link .highlight-link:hover {
-  color: #d48d28;
+  color: #5285ea;
 }
 
 .intro-image-container {
@@ -84,7 +115,7 @@
 }
 
 .image-card {
-  background-color: d4e4e2;
+  background-color: #bfcadb72;
   padding: 32px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -97,7 +128,6 @@
 }
 
 .why-section {
-  margin-bottom: 64px;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 12px;
   padding: 32px;
@@ -146,10 +176,6 @@
   justify-content: center;
 }
 
-.objective-section {
-  margin-bottom: 64px;
-}
-
 .objective-grid {
   display: grid;
   gap: 48px;
@@ -171,7 +197,7 @@
 .objective-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #2c4c6d;
+  color: #163758;
 }
 
 @media (min-width: 768px) {
