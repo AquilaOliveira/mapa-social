@@ -53,27 +53,50 @@ public class UsuarioService {
     }
     public boolean verificarSenha(String email, String senhaEmTextoSimples) {
         try {
+            System.out.println("=== VERIFICAR SENHA ===");
+            System.out.println("Email: " + email);
+            System.out.println("Senha texto: " + senhaEmTextoSimples);
+            
             if (email == null || senhaEmTextoSimples == null) {
+                System.out.println("Email ou senha null");
                 return false;
             }
             
             Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
             
             if (usuarioOpt.isEmpty()) {
+                System.out.println("Usuário não encontrado");
                 return false;
             }
             
             Usuario usuario = usuarioOpt.get();
             String hashSalvo = usuario.getSenhaHash();
             
+            System.out.println("Hash salvo: " + hashSalvo);
+            System.out.println("Bloqueado: " + usuario.getBloqueado());
+            
             if (hashSalvo == null || hashSalvo.isEmpty()) {
+                System.out.println("Hash vazio");
                 return false;
             }
             
-            return passwordEncoder.matches(senhaEmTextoSimples, hashSalvo);
+            boolean matches = passwordEncoder.matches(senhaEmTextoSimples, hashSalvo);
+            System.out.println("Matches: " + matches);
+            System.out.println("=======================");
+            
+            return matches;
         } catch (Exception e) {
             System.err.println("Erro ao verificar senha: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
+    }
+    
+    public String gerarHash(String senha) {
+        return passwordEncoder.encode(senha);
+    }
+    
+    public boolean testarHash(String senha, String hash) {
+        return passwordEncoder.matches(senha, hash);
     }
 }
