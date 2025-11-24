@@ -4,6 +4,18 @@ import { Link } from "react-router-dom";
 import "./HomePage.css";
 import MapPage from "./Map.jsx";
 
+// Imagens devem ser importadas em projetos Vite para funcionarem no build
+import saude from "../assets/images/saude-publica.png";
+import educacao from "../assets/images/educacao-publica.png";
+import lazer from "../assets/images/lazer.png";
+import alimentacao from "../assets/images/alimentacao.png";
+import cursos from "../assets/images/cursos-profissionalizantes.png";
+import documentos from "../assets/images/emissao-de-documentos.png";
+import transporte from "../assets/images/transporte-publico.png";
+import moradia from "../assets/images/moradia.png";
+import assistencia from "../assets/images/assistencia-social.png";
+import lupa from "../assets/icons/lupa.png";
+
 function HomePage() {
   const [selectedServices, setSelectedServices] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -48,15 +60,15 @@ function HomePage() {
   };
 
   const services = [
-    { icon: "/src/assets/images/saude-publica.png", title: "Saúde", subtitle: "Pública" },
-    { icon: "/src/assets/images/educacao-publica.png", title: "Educação", subtitle: "Pública" },
-    { icon: "/src/assets/images/lazer.png", title: "Lazer" },
-    { icon: "/src/assets/images/alimentacao.png", title: "Alimentação" },
-    { icon: "/src/assets/images/cursos-profissionalizantes.png", title: "Cursos", subtitle: "Profissionalizantes" },
-    { icon: "/src/assets/images/emissao-de-documentos.png", title: "Emissão de", subtitle: "Documentos Gratuitos" },
-    { icon: "/src/assets/images/transporte-publico.png", title: "Transporte", subtitle: "Público" },
-    { icon: "/src/assets/images/moradia.png", title: "Moradia" },
-    { icon: "/src/assets/images/assistencia-social.png", title: "Assistência", subtitle: "Social" },
+    { icon: saude, title: "Saúde", subtitle: "Pública" },
+    { icon: educacao, title: "Educação", subtitle: "Pública" },
+    { icon: lazer, title: "Lazer" },
+    { icon: alimentacao, title: "Alimentação" },
+    { icon: cursos, title: "Cursos", subtitle: "Profissionalizantes" },
+    { icon: documentos, title: "Emissão de", subtitle: "Documentos Gratuitos" },
+    { icon: transporte, title: "Transporte", subtitle: "Público" },
+    { icon: moradia, title: "Moradia" },
+    { icon: assistencia, title: "Assistência", subtitle: "Social" },
   ];
 
   return (
@@ -88,11 +100,7 @@ function HomePage() {
                     onChange={handleSearchChange}
                   />
                   <button type="submit" className="search-button" onClick={handleSearch}>
-                    <img
-                      src="/src/assets/icons/lupa.png"
-                      alt="Buscar"
-                      className="search-icon"
-                    />
+                    <img src={lupa} alt="Buscar" className="search-icon" />
                   </button>
                 </div>
               </div>
