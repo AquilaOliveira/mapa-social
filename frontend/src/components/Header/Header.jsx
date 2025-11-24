@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
+import mapIcon from "../../assets/icons/map.png";
 
 export function Header({ onLogin, onLogout, userName, isLoggedIn }) {
   const location = useLocation();
@@ -31,11 +32,7 @@ export function Header({ onLogin, onLogout, userName, isLoggedIn }) {
       <div className={`header-container ${isAcessoPage ? "header-acesso" : ""}`}>
         
         <Link to="/" className="header-logo" onClick={closeMenu}>
-          <img
-            src="/src/assets/icons/map.png"
-            alt="Ícone do mapa"
-            className="header-icon"
-          />
+          <img src={mapIcon} alt="Ícone do mapa" className="header-icon" />
           <h1 className="header-title">Mapa Social</h1>
         </Link>
 
