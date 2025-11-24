@@ -54,20 +54,40 @@ public class AdminService {
     }
 
     @Transactional
-    public void excluirUsuario(Integer id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new IllegalArgumentException("Usuário não encontrado");
+    public void excluirUsuario(Integer id, Integer adminId) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        
+        Usuario admin = usuarioRepository.findById(adminId)
+            .orElseThrow(() -> new IllegalArgumentException("Admin não encontrado"));
+        
+        if (usuario.getRole() == UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Super Admin não pode ser excluído");
         }
+        
+        // ADMIN só pode excluir USER, SUPER_ADMIN pode excluir ADMIN e USER
+        if (usuario.getRole() == UserRole.ADMIN && admin.getRole() != UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Apenas SUPER_ADMIN pode excluir ADMIN");
+        }
+        
         usuarioRepository.deleteById(id);
     }
 
     @Transactional
-    public Usuario promoverParaAdmin(Integer id) {
+    public Usuario promoverParaAdmin(Integer id, Integer adminId) {
         Usuario usuario = usuarioRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
         
+        Usuario admin = usuarioRepository.findById(adminId)
+            .orElseThrow(() -> new IllegalArgumentException("Admin não encontrado"));
+        
         if (usuario.getRole() == UserRole.SUPER_ADMIN) {
             throw new IllegalArgumentException("Super Admin não pode ser alterado");
+        }
+        
+        // Apenas SUPER_ADMIN pode promover para ADMIN
+        if (admin.getRole() != UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Apenas SUPER_ADMIN pode promover usuários para ADMIN");
         }
         
         usuario.setRole(UserRole.ADMIN);
@@ -75,12 +95,20 @@ public class AdminService {
     }
 
     @Transactional
-    public Usuario rebaixarParaUser(Integer id) {
+    public Usuario rebaixarParaUser(Integer id, Integer adminId) {
         Usuario usuario = usuarioRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
         
+        Usuario admin = usuarioRepository.findById(adminId)
+            .orElseThrow(() -> new IllegalArgumentException("Admin não encontrado"));
+        
         if (usuario.getRole() == UserRole.SUPER_ADMIN) {
             throw new IllegalArgumentException("Super Admin não pode ser alterado");
+        }
+        
+        // Apenas SUPER_ADMIN pode rebaixar ADMIN
+        if (usuario.getRole() == UserRole.ADMIN && admin.getRole() != UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Apenas SUPER_ADMIN pode rebaixar ADMIN");
         }
         
         usuario.setRole(UserRole.USER);
@@ -88,12 +116,20 @@ public class AdminService {
     }
 
     @Transactional
-    public Usuario bloquearUsuario(Integer id) {
+    public Usuario bloquearUsuario(Integer id, Integer adminId) {
         Usuario usuario = usuarioRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
         
+        Usuario admin = usuarioRepository.findById(adminId)
+            .orElseThrow(() -> new IllegalArgumentException("Admin não encontrado"));
+        
         if (usuario.getRole() == UserRole.SUPER_ADMIN) {
             throw new IllegalArgumentException("Super Admin não pode ser bloqueado");
+        }
+        
+        // ADMIN só pode bloquear USER, SUPER_ADMIN pode bloquear ADMIN e USER
+        if (usuario.getRole() == UserRole.ADMIN && admin.getRole() != UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Apenas SUPER_ADMIN pode bloquear ADMIN");
         }
         
         usuario.setBloqueado(true);

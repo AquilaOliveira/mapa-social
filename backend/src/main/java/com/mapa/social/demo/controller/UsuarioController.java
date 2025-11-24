@@ -54,23 +54,36 @@ public class UsuarioController {
             String email = credenciais.get("email");
             String senha = credenciais.get("senhaHash");
             
-            System.out.println("=== DEBUG LOGIN ===");
-            System.out.println("Email recebido: " + email);
-            System.out.println("Senha recebida: " + senha);
-            System.out.println("==================");
-            
             if (email == null || senha == null) {
                  return ResponseEntity.badRequest().body(Map.of("message", "Email e senha são obrigatórios."));
             }
 
+            Usuario usuario = usuarioService.buscarPorEmail(email)
+                .orElse(null);
+            
+            if (usuario == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Credenciais inválidas."));
+            }
+            
+            if (usuario.getBloqueado()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Usuário bloqueado. Entre em contato com o administrador."));
+            }
+
             boolean valid = usuarioService.verificarSenha(email, senha);
             
-            System.out.println("Senha válida? " + valid);
-            
             if (valid) {
-                return ResponseEntity.ok(Map.of("message", "Login bem-sucedido!", "email", email));
+                return ResponseEntity.ok(Map.of(
+                    "message", "Login bem-sucedido!",
+                    "email", email,
+                    "nome", usuario.getNome(),
+                    "role", usuario.getRole().toString(),
+                    "id", usuario.getId()
+                ));
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Credenciais inválidas."));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Credenciais inválidas."));
             }
         } catch (Exception e) {
             System.err.println("Erro no login: " + e.getMessage());

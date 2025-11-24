@@ -51,6 +51,11 @@ public class UsuarioService {
     public Optional<Usuario> buscarPorId(Integer id) {
         return usuarioRepository.findById(id);
     }
+    
+    public Optional<Usuario> buscarPorEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+    
     public boolean verificarSenha(String email, String senhaEmTextoSimples) {
         try {
             System.out.println("=== VERIFICAR SENHA ===");

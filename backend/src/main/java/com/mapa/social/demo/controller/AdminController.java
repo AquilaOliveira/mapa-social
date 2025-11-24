@@ -68,20 +68,20 @@ public class AdminController {
     }
 
     @DeleteMapping("/usuarios/{id}")
-    public ResponseEntity<?> excluirUsuario(@PathVariable Integer id) {
+    public ResponseEntity<?> excluirUsuario(@PathVariable Integer id, @RequestParam Integer adminId) {
         try {
-            adminService.excluirUsuario(id);
+            adminService.excluirUsuario(id, adminId);
             return ResponseEntity.ok(Map.of("message", "Usuário excluído com sucesso"));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("message", e.getMessage()));
         }
     }
 
     @PostMapping("/usuarios/{id}/promover")
-    public ResponseEntity<?> promoverParaAdmin(@PathVariable Integer id) {
+    public ResponseEntity<?> promoverParaAdmin(@PathVariable Integer id, @RequestParam Integer adminId) {
         try {
-            Usuario usuario = adminService.promoverParaAdmin(id);
+            Usuario usuario = adminService.promoverParaAdmin(id, adminId);
             return ResponseEntity.ok(Map.of(
                 "message", "Usuário promovido para ADMIN",
                 "usuario", usuario
@@ -93,9 +93,9 @@ public class AdminController {
     }
 
     @PostMapping("/usuarios/{id}/rebaixar")
-    public ResponseEntity<?> rebaixarParaUser(@PathVariable Integer id) {
+    public ResponseEntity<?> rebaixarParaUser(@PathVariable Integer id, @RequestParam Integer adminId) {
         try {
-            Usuario usuario = adminService.rebaixarParaUser(id);
+            Usuario usuario = adminService.rebaixarParaUser(id, adminId);
             return ResponseEntity.ok(Map.of(
                 "message", "Usuário rebaixado para USER",
                 "usuario", usuario
@@ -107,9 +107,9 @@ public class AdminController {
     }
 
     @PostMapping("/usuarios/{id}/bloquear")
-    public ResponseEntity<?> bloquearUsuario(@PathVariable Integer id) {
+    public ResponseEntity<?> bloquearUsuario(@PathVariable Integer id, @RequestParam Integer adminId) {
         try {
-            Usuario usuario = adminService.bloquearUsuario(id);
+            Usuario usuario = adminService.bloquearUsuario(id, adminId);
             return ResponseEntity.ok(Map.of(
                 "message", "Usuário bloqueado",
                 "usuario", usuario
