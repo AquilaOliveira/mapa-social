@@ -38,6 +38,13 @@ public class UsuarioService {
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent() && usuario.getId() == null) {
             throw new IllegalArgumentException("Email já cadastrado.");
         }
+        
+        // IMPORTANTE: Cadastro público sempre cria USER
+        // Apenas SUPER_ADMIN pode criar ADMIN via painel admin
+        if (usuario.getId() == null) {
+            usuario.setRole(com.mapa.social.demo.model.UserRole.USER);
+        }
+        
         String senhaEmTextoSimples = usuario.getSenhaHash();
         String senhaCriptografada = passwordEncoder.encode(senhaEmTextoSimples);
         usuario.setSenhaHash(senhaCriptografada);

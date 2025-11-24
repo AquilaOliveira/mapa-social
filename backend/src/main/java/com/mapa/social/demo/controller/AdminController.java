@@ -140,6 +140,46 @@ public class AdminController {
         return ResponseEntity.ok(admins);
     }
 
+    @PostMapping("/usuarios/criar")
+    public ResponseEntity<?> criarUsuario(@RequestBody Map<String, String> dados, @RequestParam Integer adminId) {
+        try {
+            Usuario usuario = adminService.criarUsuario(
+                dados.get("nome"),
+                dados.get("email"),
+                dados.get("senha"),
+                dados.get("tipo"),
+                adminId
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                "message", "Usuário criado com sucesso",
+                "usuario", usuario
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    @PutMapping("/usuarios/{id}/editar")
+    public ResponseEntity<?> editarUsuario(@PathVariable Integer id, @RequestBody Map<String, String> dados, @RequestParam Integer adminId) {
+        try {
+            Usuario usuario = adminService.editarUsuario(
+                id,
+                dados.get("nome"),
+                dados.get("email"),
+                dados.get("tipo"),
+                adminId
+            );
+            return ResponseEntity.ok(Map.of(
+                "message", "Usuário atualizado com sucesso",
+                "usuario", usuario
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+        }
+    }
+
     @GetMapping("/dashboard/estatisticas")
     public ResponseEntity<Map<String, Object>> obterEstatisticas() {
         Map<String, Object> stats = adminService.obterEstatisticas();

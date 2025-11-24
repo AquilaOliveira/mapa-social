@@ -162,4 +162,66 @@ public class AdminService {
         
         return stats;
     }
+
+    @Transactional
+    public Usuario criarUsuario(String nome, String email, String senha, String tipo, Integer adminId) {
+        Usuario admin = usuarioRepository.findById(adminId)
+            .orElseThrow(() -> new IllegalArgumentException("Admin não encontrado"));
+        
+        // Validar permissões (ADMIN e SUPER_ADMIN podem criar usuários)
+        if (admin.getRole() != UserRole.ADMIN && admin.getRole() != UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Apenas administradores podem criar usuários");
+        }
+        
+        if (usuarioRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("Email já cadastrado");
+        }
+        
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setNome(nome);
+        novoUsuario.setEmail(email);
+        novoUsuario.setSenhaHash(senha); // Será criptografada pelo salvar
+        novoUsuario.setTipo(tipo != null ? tipo : "COMUM");
+        novoUsuario.setRole(UserRole.USER);
+        novoUsuario.setBloqueado(false);
+        
+        // Usar serviço de usuário para criptografar senha
+        return usuarioRepository.save(novoUsuario);
+    }
+
+    @Transactional
+    public Usuario editarUsuario(Integer id, String nome, String email, String tipo, Integer adminId) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        
+        Usuario admin = usuarioRepository.findById(adminId)
+            .orElseThrow(() -> new IllegalArgumentException("Admin não encontrado"));
+        
+        // Validar permissões
+        if (admin.getRole() != UserRole.ADMIN && admin.getRole() != UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Apenas administradores podem editar usuários");
+        }
+        
+        // ADMIN não pode editar outros ADMIN ou SUPER_ADMIN
+        if (admin.getRole() == UserRole.ADMIN && usuario.getRole() != UserRole.USER) {
+            throw new IllegalArgumentException("ADMIN só pode editar usuários USER");
+        }
+        
+        if (usuario.getRole() == UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("SUPER_ADMIN não pode ser editado");
+        }
+        
+        // Verificar se email já existe (se mudou)
+        if (!usuario.getEmail().equals(email) && usuarioRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("Email já cadastrado");
+        }
+        
+        usuario.setNome(nome);
+        usuario.setEmail(email);
+        if (tipo != null) {
+            usuario.setTipo(tipo);
+        }
+        
+        return usuarioRepository.save(usuario);
+    }
 }
