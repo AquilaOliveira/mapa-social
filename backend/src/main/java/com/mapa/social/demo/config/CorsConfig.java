@@ -14,7 +14,16 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
+
+        // Origens locais sempre permitidas para desenvolvimento
         config.setAllowedOrigins(List.of("http://localhost:5173", "http://127.0.0.1:5173"));
+
+        // Origem de produção (Railway + Vercel) via variável FRONTEND_ORIGIN se presente
+        String frontendOrigin = System.getenv("FRONTEND_ORIGIN");
+        if (frontendOrigin != null && !frontendOrigin.isBlank()) {
+            config.addAllowedOrigin(frontendOrigin.trim());
+        }
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

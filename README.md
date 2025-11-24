@@ -28,21 +28,66 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ---
 
-## Instalação
+## Instalação & Execução
 
-FAZER UM PASSO A PASSO QUANDO O PROJETO ESTIVER PRONTO!!
+### Backend (Spring Boot)
+Pré-requisitos: Java 17, Maven Wrapper incluso.
 
-Clone o repositório e siga os passos:
+```bash
+git clone https://github.com/SEU_USUARIO/mapa-social.git
+cd mapa-social/backend
+./mvnw clean package
+java -jar target/demo-0.0.1-SNAPSHOT.jar
+```
 
-bash
+Perfil H2 (memória):
+```bash
+java -jar target/demo-0.0.1-SNAPSHOT.jar --spring.profiles.active=h2
+```
 
-Clone o repositório
+### Frontend (Vite React)
+Pré-requisitos: Node 18+.
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
 
-Entre na pasta do projeto
+Defina a URL do backend em `.env`:
+```
+VITE_API_BASE=http://localhost:8080
+```
 
-Instale as dependências
+## Deploy (Produção)
 
-Inicie o projeto
+### Backend no Railway
+1. Crie projeto no Railway e conecte o repositório `backend`.
+2. Adicione Postgres (gera variáveis `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD`).
+3. Garanta `spring.jpa.hibernate.ddl-auto=validate` e `Flyway` habilitado (já configurado).
+4. Adicione variável `FRONTEND_ORIGIN=https://SEU_FRONTEND.vercel.app` para CORS.
+5. Railway gera a URL pública do backend (use no frontend).
+
+### Frontend no Vercel
+1. Importar repositório `frontend`.
+2. Definir variável de ambiente `VITE_API_BASE=https://SEU_BACKEND.up.railway.app`.
+3. Fazer deploy; testar rotas e mapa.
+
+### Variáveis Principais
+- Backend: `FRONTEND_ORIGIN`, (`PG*` automáticas Railway)
+- Frontend: `VITE_API_BASE`
+
+### Fluxo de Migração de Banco
+1. Primeiro deploy aplica `V1__baseline.sql` (Flyway).
+2. Dados de seed são criados apenas se não existirem (via `DataInitializer`).
+3. Próximas mudanças estruturais: criar novos arquivos `V2__...sql`, `V3__...sql` etc.
+
+### CI
+Workflow GitHub Actions (`backend/.github/workflows/backend-ci.yml`) executa build e testes em cada push/PR.
+
+## Desenvolvimento Futuro
+- Adicionar autenticação JWT.
+- Criar testes de integração para endpoints principais.
+- Monitoramento com Actuator + métricas.
 
 ---
 
