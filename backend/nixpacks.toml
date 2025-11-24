@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ['maven', 'jdk21']
+
+[phases.build]
+cmds = [
+    'chmod +x mvnw',
+    './mvnw clean install -DskipTests'
+]
+
+[phases.deploy]
+cmd = 'java -Dserver.port=$PORT $JAVA_OPTS -jar target/demo-0.0.1-SNAPSHOT.jar'
