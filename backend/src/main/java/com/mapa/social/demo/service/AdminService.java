@@ -61,6 +61,60 @@ public class AdminService {
         usuarioRepository.deleteById(id);
     }
 
+    @Transactional
+    public Usuario promoverParaAdmin(Integer id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        
+        if (usuario.getRole() == UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Super Admin não pode ser alterado");
+        }
+        
+        usuario.setRole(UserRole.ADMIN);
+        return usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public Usuario rebaixarParaUser(Integer id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        
+        if (usuario.getRole() == UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Super Admin não pode ser alterado");
+        }
+        
+        usuario.setRole(UserRole.USER);
+        return usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public Usuario bloquearUsuario(Integer id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        
+        if (usuario.getRole() == UserRole.SUPER_ADMIN) {
+            throw new IllegalArgumentException("Super Admin não pode ser bloqueado");
+        }
+        
+        usuario.setBloqueado(true);
+        return usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public Usuario desbloquearUsuario(Integer id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        
+        usuario.setBloqueado(false);
+        return usuarioRepository.save(usuario);
+    }
+
+    public List<Usuario> listarAdmins() {
+        return usuarioRepository.findAll().stream()
+            .filter(u -> u.getRole() == UserRole.ADMIN || u.getRole() == UserRole.SUPER_ADMIN)
+            .toList();
+    }
+
     public Map<String, Object> obterEstatisticas() {
         Map<String, Object> stats = new HashMap<>();
         

@@ -78,6 +78,68 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/usuarios/{id}/promover")
+    public ResponseEntity<?> promoverParaAdmin(@PathVariable Integer id) {
+        try {
+            Usuario usuario = adminService.promoverParaAdmin(id);
+            return ResponseEntity.ok(Map.of(
+                "message", "Usuário promovido para ADMIN",
+                "usuario", usuario
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/usuarios/{id}/rebaixar")
+    public ResponseEntity<?> rebaixarParaUser(@PathVariable Integer id) {
+        try {
+            Usuario usuario = adminService.rebaixarParaUser(id);
+            return ResponseEntity.ok(Map.of(
+                "message", "Usuário rebaixado para USER",
+                "usuario", usuario
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/usuarios/{id}/bloquear")
+    public ResponseEntity<?> bloquearUsuario(@PathVariable Integer id) {
+        try {
+            Usuario usuario = adminService.bloquearUsuario(id);
+            return ResponseEntity.ok(Map.of(
+                "message", "Usuário bloqueado",
+                "usuario", usuario
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/usuarios/{id}/desbloquear")
+    public ResponseEntity<?> desbloquearUsuario(@PathVariable Integer id) {
+        try {
+            Usuario usuario = adminService.desbloquearUsuario(id);
+            return ResponseEntity.ok(Map.of(
+                "message", "Usuário desbloqueado",
+                "usuario", usuario
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/usuarios/admins")
+    public ResponseEntity<List<Usuario>> listarAdmins() {
+        List<Usuario> admins = adminService.listarAdmins();
+        return ResponseEntity.ok(admins);
+    }
+
     @GetMapping("/dashboard/estatisticas")
     public ResponseEntity<Map<String, Object>> obterEstatisticas() {
         Map<String, Object> stats = adminService.obterEstatisticas();

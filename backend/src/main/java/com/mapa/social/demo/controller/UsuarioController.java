@@ -54,11 +54,18 @@ public class UsuarioController {
             String email = credenciais.get("email");
             String senha = credenciais.get("senhaHash");
             
+            System.out.println("=== DEBUG LOGIN ===");
+            System.out.println("Email recebido: " + email);
+            System.out.println("Senha recebida: " + senha);
+            System.out.println("==================");
+            
             if (email == null || senha == null) {
                  return ResponseEntity.badRequest().body(Map.of("message", "Email e senha são obrigatórios."));
             }
 
             boolean valid = usuarioService.verificarSenha(email, senha);
+            
+            System.out.println("Senha válida? " + valid);
             
             if (valid) {
                 return ResponseEntity.ok(Map.of("message", "Login bem-sucedido!", "email", email));
@@ -66,6 +73,8 @@ public class UsuarioController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Credenciais inválidas."));
             }
         } catch (Exception e) {
+            System.err.println("Erro no login: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("message", "Erro no servidor: " + e.getMessage()));
         }
@@ -80,5 +89,20 @@ public class UsuarioController {
         return usuarioService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    @GetMapping("/test-bcrypt/{senha}")
+    public ResponseEntity<?> testBCrypt(@PathVariable String senha) {
+        String novoHash = usuarioService.gerarHash(senha);
+        var usuario = usuarioService.buscarPorId(1);
+        String hashBanco = usuario.map(u -> u.getSenhaHash()).orElse("N/A");
+        boolean matches = usuario.map(u -> usuarioService.testarHash(senha, u.getSenhaHash())).orElse(false);
+        return ResponseEntity.ok(Map.of(
+            "senha", senha,
+            "novoHashGerado", novoHash,
+            "hashNoBanco", hashBanco,
+            "matchesComBanco", matches,
+            "emailBanco", usuario.map(u -> u.getEmail()).orElse("N/A")
+        ));
     }
 }

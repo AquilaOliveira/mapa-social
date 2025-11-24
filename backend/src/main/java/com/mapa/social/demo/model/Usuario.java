@@ -29,6 +29,9 @@ public class Usuario {
     @Column(name = "data_cadastro", nullable = false)
     private LocalDateTime dataCadastro = LocalDateTime.now();
 
+    @Column(nullable = false)
+    private Boolean bloqueado = false;
+
     public Usuario() {
     }
 
@@ -86,5 +89,13 @@ public class Usuario {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public Boolean getBloqueado() {
+        return bloqueado;
+    }
+
+    public void setBloqueado(Boolean bloqueado) {
+        this.bloqueado = bloqueado;
     }
 }
