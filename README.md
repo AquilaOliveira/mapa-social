@@ -1,111 +1,149 @@
-# mapa-social
+# Mapa Social
 
-Mapa de serviços sociais gratuitos, facilitando o acesso a direitos básicos por meio da tecnologia.
+Mapa de serviços sociais gratuitos que centraliza informações de saúde, alimentação, abrigo e assistência social em um mapa interativo, facilitando o acesso a direitos básicos para pessoas em situação de vulnerabilidade.
+
+---
+
+![Tela inicial do Mapa Social](tela.jpeg)
 
 ---
 
 ## Índice
-- [Sobre](#-sobre)
-- [Tecnologias](#-tecnologias)
-- [Instalação](#-instalação)
-- [Autor](#-autores)
+
+- [Sobre](#sobre)
+- [Funcionalidades](#funcionalidades)
+- [Arquitetura](#arquitetura)
+- [Tecnologias](#tecnologias)
+- [Instalação](#instalação)
+- [Deploy](#deploy)
+- [Autores](#autores)
 
 ---
 
 ## Sobre
-Este projeto foi desenvolvido pensando na inclusão de pessoas que não tenham acesso ou meios de chegar a um tipo serviço gratuito na cidade de Bragança Paulista.  
-Ele permite que os usuários acessem e naveguem no mapa da cidade com ou sem um login ativo, façam buscas sobre os tipos de serviços disponíveis e tenham acesso a um meio de contato dos serviços prestados..
+
+O Mapa Social é uma plataforma web pensada para incluir pessoas que têm dificuldade em localizar serviços sociais gratuitos na cidade de Bragança Paulista e região, permitindo acesso ao mapa mesmo sem login obrigatório.  
+A aplicação aproxima cidadãos em vulnerabilidade de organizações que oferecem serviços nas áreas de saúde, nutrição, moradia e apoio social, contribuindo para a redução de desigualdades e fortalecimento de redes comunitárias.
+
+---
+
+## Funcionalidades
+
+- Acesso anônimo ao mapa, com visualização de serviços e detalhes como nome, endereço, contato e categoria.  
+- Filtro por categoria e busca por palavra‑chave para encontrar serviços sociais.  
+- Visualização de rotas até o local via aplicativos externos de mapas (ex.: Google Maps, Waze).  
+- Envio de sugestão de novos serviços sociais por usuários anônimos ou autenticados.  
+
+Usuário autenticado:  
+- Favoritar serviços, consultar favoritos e histórico de acessos.  
+- Acompanhar status das sugestões (pendente, aprovado, recusado) e visualizar justificativas.  
+
+Administrador:  
+- Analisar, aprovar, recusar e editar serviços sugeridos.  
+- Publicar, editar e remover avisos na plataforma e visualizar estatísticas administrativas.  
+
+Usuário TI (super administrador):  
+- Criar, editar, desativar administradores e gerenciar permissões administrativas.
+
+---
+
+## Arquitetura
+
+A aplicação adota arquitetura cliente‑servidor com separação entre frontend, backend e banco de dados.
+
+- Frontend: SPA em React consumindo uma API REST.  
+- Backend: API REST em Java (Spring Boot), responsável por regras de negócio, autenticação e integrações.  
+- Banco de dados: MySQL armazenando usuários, serviços sociais, categorias, favoritos, histórico e logs.
+
+Os módulos principais seguem os casos de uso documentados: Manter Serviços Sociais, Ver Rotas para o Local, Fazer Login, Manter Administradores/Usuário, Gerenciar Avisos e Estatísticas, Consultar Favoritos.
 
 ---
 
 ## Tecnologias
-As seguintes ferramentas foram usadas na construção do projeto:
 
-- [React](https://reactjs.org/)
-- API ou Banco de dados relacional (Decidir)
-- Decidir em que linguagem o Backend será construído
-- [TailwindCSS](https://tailwindcss.com) ou somente o CSS3
+- Frontend  
+  - React  
+  - JavaScript (ES2024)  
+  - CSS3 para layout responsivo e visual consistente
+
+- Backend  
+  - Java  
+  - Spring Boot
+
+- Banco de dados  
+  - MySQL
+
+- Ferramentas  
+  - Visual Studio Code como IDE principal
+
+> Ajuste esta seção se decidir incluir TailwindCSS, autenticação JWT ou outras bibliotecas adicionais.
 
 ---
 
-## Instalação & Execução
+## Instalação
 
 ### Backend (Spring Boot)
-Pré-requisitos: Java 17, Maven Wrapper incluso.
+Pré‑requisitos: Java 17, Maven (ou Maven Wrapper) e MySQL configurado.
 
-```bash
-git clone https://github.com/SEU_USUARIO/mapa-social.git
+git clone https://github.com/AquilaOliveira/mapa-social.git
+
 cd mapa-social/backend
+
 ./mvnw clean package
+
 java -jar target/demo-0.0.1-SNAPSHOT.jar
-```
 
-Perfil H2 (memória):
-```bash
-java -jar target/demo-0.0.1-SNAPSHOT.jar --spring.profiles.active=h2
-```
 
-### Frontend (Vite React)
-Pré-requisitos: Node 18+.
-```bash
+### Frontend (Vite + React)
+
+Pré‑requisitos: Node 18+.
+
 cd ../frontend
 npm install
 npm run dev
-```
 
-Defina a URL do backend em `.env`:
-```
+
+Defina a URL da API no arquivo `.env` do frontend:
+
 VITE_API_BASE=http://localhost:8080
-```
 
-## Deploy (Produção)
-
-### Backend no Railway
-1. Crie projeto no Railway e conecte o repositório `backend`.
-2. Adicione Postgres (gera variáveis `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD`).
-3. Garanta `spring.jpa.hibernate.ddl-auto=validate` e `Flyway` habilitado (já configurado).
-4. Adicione variável `FRONTEND_ORIGIN=https://SEU_FRONTEND.vercel.app` para CORS.
-5. Railway gera a URL pública do backend (use no frontend).
-
-### Frontend no Vercel
-1. Importar repositório `frontend`.
-2. Definir variável de ambiente `VITE_API_BASE=https://SEU_BACKEND.up.railway.app`.
-3. Fazer deploy; testar rotas e mapa.
-
-### Variáveis Principais
-- Backend: `FRONTEND_ORIGIN`, (`PG*` automáticas Railway)
-- Frontend: `VITE_API_BASE`
-
-### Fluxo de Migração de Banco
-1. Primeiro deploy aplica `V1__baseline.sql` (Flyway).
-2. Dados de seed são criados apenas se não existirem (via `DataInitializer`).
-3. Próximas mudanças estruturais: criar novos arquivos `V2__...sql`, `V3__...sql` etc.
-
-### CI
-Workflow GitHub Actions (`backend/.github/workflows/backend-ci.yml`) executa build e testes em cada push/PR.
-
-## Desenvolvimento Futuro
-- Adicionar autenticação JWT.
-- Criar testes de integração para endpoints principais.
-- Monitoramento com Actuator + métricas.
 
 ---
 
-### Autores
+## Deploy
 
-Áquila Matheus de Oliveira
-- [LinkedIn](https://www.linkedin.com/in/aquila-oliveira)  
-- [GitHub](https://github.com/AquilaOliveira)
+### Backend
 
-Josiely de Olievira Ferreira
-- [LinkedIn](https://www.linkedin.com/in/josiely-oliveira)
-- [GitHub](https://github.com/Josiely-Oliveira)
+Pode ser implantado em um provedor compatível com aplicações Java (como Railway, Render ou similar).
 
-Raissa Santos Feitosa
-- [LinkedIn](https://www.linkedin.com/in/raissa-santos-feitosa-73485b1a3/)
-- [GitHub](https://github.com/raissa-sf)
+Variáveis de ambiente sugeridas:
 
-Vitor de Oliveira Faria
-- [LinkedIn](https://www.linkedin.com/in/vitor-oliveira-526a28209)
-- [GitHub](https://github.com/Vi1tor)
+- `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`  
+- `FRONTEND_ORIGIN=https://SEU_FRONTEND.vercel.app` (para CORS)
 
+### Frontend
+
+Pode ser publicado na Vercel ou similar, apontando para a URL pública do backend.
+
+- `VITE_API_BASE=https://SEU_BACKEND_PUBLIC_URL`
+
+
+---
+
+## Autores
+
+- Áquila Matheus de Oliveira  
+  - LinkedIn: https://www.linkedin.com/in/aquila-oliveira  
+  - GitHub: https://github.com/AquilaOliveira  
+
+- Josiely de Oliveira Ferreira  
+  - LinkedIn: https://www.linkedin.com/in/josiely-oliveira  
+  - GitHub: https://github.com/Josiely-Oliveira  
+
+- Raissa Santos Feitosa  
+  - LinkedIn: https://www.linkedin.com/in/raissa-santos-feitosa-73485b1a3/  
+  - GitHub: https://github.com/raissa-sf  
+
+- Vitor de Oliveira Faria  
+  - LinkedIn: https://www.linkedin.com/in/vitor-oliveira-526a28209  
+  - GitHub: https://github.com/Vi1tor
